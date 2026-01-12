@@ -4,8 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-my_macro = { path = "../my_macro" }
-
+tokio = { version = "1.37", features = ["full"] }  # 添加这行
 syn = { version = "2.0", features = ["full"] }
 quote = "1.0"
 proc-macro2 = "1.0"
