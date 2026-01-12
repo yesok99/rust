@@ -1,0 +1,11 @@
+[package]
+name = "my_solana_program"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+solana-program = "1.18.18"  # 根据你的本地 Solana SDK 版本选择
+borsh = "0.10.3"

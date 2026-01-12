@@ -1,0 +1,6 @@
+{
+    "code-runner.executorMap": {
+        "rust": "cd $workspaceRoot && cargo run"
+    },
+    "code-runner.runInTerminal": true
+}
