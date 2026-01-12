@@ -1,3 +1,2 @@
 *.env
-/target
-greeting/target/ macro/target/ my_macro/target/ my_macro/target/package/my_macro-0.1.0/target/ my_solana_program/target/ my_solana_program/target/doc/src/crunchy/Users/hgf/Documents/rust/my_solana_program/target/ test1/target/
+**/target/
