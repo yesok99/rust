@@ -7,5 +7,7 @@ edition = "2021"
 crate-type = ["cdylib", "lib"]
 
 [dependencies]
-solana-program = "1.18.18"  # 根据你的本地 Solana SDK 版本选择
+#solana-program = "1.18.18"  # 根据你的本地 Solana SDK 版本选择
+#borsh = "0.10.3"
+solana-program = "1.18.0"
 borsh = "0.10.3"

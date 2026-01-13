@@ -5,7 +5,7 @@ use solana_program::{
         msg,
         pubkey::Pubkey,
     };
-    use borsh::{BorshDeserialize, BorshSerialize};
+use borsh::{BorshDeserialize, BorshSerialize};
     #[derive(BorshDeserialize, BorshSerialize)]
     pub struct GreetingAccount {
         /// number of greetings

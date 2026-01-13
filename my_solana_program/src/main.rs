@@ -4,6 +4,7 @@ mod process; // 导出 process 模块
 
 fn main()  {
     
+    // 调用序列化
     serializer::main();
     
     let result = process::main();
