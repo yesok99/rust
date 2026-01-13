@@ -37,7 +37,7 @@ async fn main() {
         wallet,
     ));
     let task2 = tokio::spawn(fetch_bnb_balance(
-        "https://bsc-dataseed2.binance.org1",
+        "https://bsc-dataseed2.binance.org",
         wallet,
     ));
 

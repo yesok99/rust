@@ -29,7 +29,7 @@ async fn fetch_bnb_balance(node_url: &str, wallet: &str) -> Result<u64, reqwest:
 
 #[tokio::main]
 async fn main() {
-    let wallet = "0xd30Fa7f4F7748636a0434E73c00fF1FEc64EC679"; // 替换为实际钱包地址
+    let wallet = "*****"; // 替换为实际钱包地址
 
     // 并行发起两个异步请求
     let task1 = tokio::spawn(fetch_bnb_balance(
@@ -37,7 +37,7 @@ async fn main() {
         wallet,
     ));
     let task2 = tokio::spawn(fetch_bnb_balance(
-        "https://bsc-dataseed2.binance.org1",
+        "https://bsc-dataseed2.binance.org",
         wallet,
     ));
 
