@@ -14,10 +14,18 @@
                     "--bin=test1"
                 ]
             },
-            "args": [],
-            "program": "${workspaceFolder}/target/debug/test1",
-            "cwd": "${workspaceFolder}"
+            "args": []
+        },
+        {
+            "name": "Debug unit tests in executable 'test1'",
+            "type": "lldb",
+            "request": "launch",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--bin=test1"
+                ]
+            }
         }
-        
     ]
 }

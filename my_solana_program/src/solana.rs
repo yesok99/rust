@@ -30,6 +30,8 @@ use borsh::{BorshDeserialize, BorshSerialize};
             msg!("Instruction type 1 executed!");
         }
 
+        // let t =  &account.data;
+        // let tt = account.data.borrow();
         // let greeting_account = GreetingAccount::try_from_slice(&account.data.borrow())?;
         // // greeting_account.counter += 1;
         // // greeting_account.serialize(&mut *account.data.borrow_mut())?;

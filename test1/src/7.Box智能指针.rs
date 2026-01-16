@@ -13,4 +13,14 @@ fn main() {
     let raw_ptr = &*b as *const i32;
     println!("通过原始指针访问: {}", unsafe { *raw_ptr });
 
+    let b = Box::new(0x12345678i32);
+    
+    // 获取地址
+    let box_addr = &b as *const Box<i32> as usize;
+    let heap_addr = &*b as *const i32 as usize;
+    
+    println!("Box 栈地址: 0x{:x}", box_addr);
+    println!("堆上数据地址: 0x{:x}", heap_addr);
+    println!("堆上存储的值: 0x{:x}", *b);
+
 }

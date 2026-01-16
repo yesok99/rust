@@ -57,7 +57,7 @@ pub fn process_instruction(
         )?;
         // 写入数据
         // account_data.data.borrow_mut().copy_from_slice(data);
-        write_data(&account_data, &data);
+
         msg!("账户构建成功");
         return Ok(());
     } else {
@@ -67,18 +67,86 @@ pub fn process_instruction(
         );
         // **account_user.lamports.borrow_mut() = account_user.lamports() + account_data.lamports();
         // **account_data.lamports.borrow_mut() = 0;
-        close(&account_data, &account_user);
+        // close(&account_data, &account_user);
     }
 
+    // match data[0] {
+    //     0 => close(&account_data, &account_user)?, // 关闭
+    //     1 => write_data(
+    //         &account_data,
+    //         &account_user,
+    //         &accounts,
+    //         &data,
+    //         rent_exemption,
+    //     )?,
+    //     _ => Err(ProgramError::InvalidInstructionData),
+    // };
+
+    if data[0] == 0 {
+        close(&account_data, &account_user);
+    } else {
+        write_data(
+            &account_data,
+            &account_user,
+            &accounts,
+            &data,
+            rent_exemption,
+        );
+    }
     msg!("完成✅");
     Ok(())
 }
 
-fn close<'a>(account_data: &'a AccountInfo, account_user: &'a AccountInfo) {
+fn close<'a>(account_data: &'a AccountInfo, account_user: &'a AccountInfo) -> ProgramResult {
     **account_user.lamports.borrow_mut() = account_user.lamports() + account_data.lamports();
     **account_data.lamports.borrow_mut() = 0;
+
+    Ok(())
 }
 
-fn write_data<'a>(account_data: &'a AccountInfo, data:&[u8]) {
+fn write_data<'a>(
+    account_data: &'a AccountInfo,
+    account_user: &'a AccountInfo,
+    accounts: &'a [AccountInfo],
+    data: &[u8],
+    rent_exemption: u64,
+) -> ProgramResult {
+    // 补足资金
+    // Fund the data account to let it rent exemption.
+    // let rent_exemption = solana_program::rent::Rent::get()?.minimum_balance(data.len());
+
+    if rent_exemption > account_data.lamports() {
+        solana_program::program::invoke(
+            &solana_program::system_instruction::transfer(
+                account_user.key,
+                account_data.key,
+                rent_exemption - account_data.lamports(),
+            ),
+            accounts,
+        )?;
+    }
+
+    // Withdraw excess funds and return them to users. Since the funds in the pda account belong to the program, we do
+    // not need to use instructions to transfer them here.
+    if rent_exemption < account_data.lamports() {
+        **account_user.lamports.borrow_mut() =
+            account_user.lamports() + account_data.lamports() - rent_exemption;
+        **account_data.lamports.borrow_mut() = rent_exemption;
+    }
+    // Realloc space.
+    account_data.realloc(data.len(), false)?;
+    // Overwrite old data with new data.
     account_data.data.borrow_mut().copy_from_slice(data);
+
+    let payload = &data[1..];
+    // 方法 1：直接打印整个 &str
+    match core::str::from_utf8(payload) {
+        Ok(s) => msg!("写入内容: {}", s),
+        Err(_) => msg!("非法 UTF-8 字节"),
+    }
+
+    // 方法 2：想更保险，可逐字节 hex 打印
+    msg!("原始字节: {:02X?}", payload);
+
+    Ok(())
 }
